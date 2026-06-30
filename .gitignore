@@ -1,0 +1,42 @@
+# Build results
+bin/
+obj/
+[Rr]elease/
+[Dd]ebug/
+x64/
+x86/
+build/
+packages/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Secrets
+appsettings.Development.json
+*.secrets.json
+
+# Test results
+TestResults/
+coverage/
+
+# Temp
+tmp/
+temp/
+*.tmp
+
+# Published binaries (self-contained)
+publish/

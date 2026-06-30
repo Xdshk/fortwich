@@ -1,0 +1,91 @@
+<Window x:Class="TwitchStressToolkit.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Twitch Stress Toolkit"
+        Height="900"
+        Width="1400"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" Background="#2D2D2D" Foreground="White" DataContext="{Binding}">
+            <MenuItem Header="File">
+                <MenuItem Header="Load Accounts..." Command="{Binding LoadAccountsCommand}" Foreground="White"/>
+                <Separator/>
+                <MenuItem Header="Export Results..." Foreground="White"/>
+                <Separator/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}" Foreground="White"/>
+            </MenuItem>
+            <MenuItem Header="Simulation">
+                <MenuItem Header="Start" Command="{Binding StartSimulationCommand}" Foreground="White"/>
+                <MenuItem Header="Stop" Command="{Binding StopSimulationCommand}" Foreground="White"/>
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Dashboard" Command="{Binding ShowDashboardCommand}" Foreground="White"/>
+                <MenuItem Header="Bot Manager" Command="{Binding ShowBotManagerCommand}" Foreground="White"/>
+                <MenuItem Header="Charts" Command="{Binding ShowChartsCommand}" Foreground="White"/>
+                <Separator/>
+                <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}" Foreground="White"/>
+                <MenuItem Header="Logs" Command="{Binding ShowLogsCommand}" Foreground="White"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About" Command="{Binding AboutCommand}" Foreground="White"/>
+            </MenuItem>
+        </Menu>
+
+        <TabControl x:Name="MainTabControl" Grid.Row="1" Background="#1E1E1E" Foreground="White" BorderBrush="#3D3D3D" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+            <TabItem Header="Dashboard">
+                <ContentControl x:Name="DashboardContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            </TabItem>
+
+            <TabItem Header="Bot Manager">
+                <ContentControl x:Name="BotManagerContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            </TabItem>
+
+            <TabItem Header="Charts">
+                <ContentControl x:Name="ChartsContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            </TabItem>
+
+            <TabItem Header="Settings">
+                <ContentControl x:Name="SettingsContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            </TabItem>
+
+            <TabItem Header="Logs">
+                <TextBox x:Name="LogTextBox"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap"
+                         Background="#0D0D0D"
+                         Foreground="#CCCCCC"
+                         FontFamily="Consolas"
+                         FontSize="12"
+                         BorderThickness="0"
+                         Padding="8"/>
+            </TabItem>
+        </TabControl>
+
+        <StatusBar Grid.Row="2" Background="#2D2D2D">
+            <StatusBarItem Foreground="#AAAAAA">
+                <TextBlock x:Name="StatusText" Text="Ready"/>
+            </StatusBarItem>
+            <Separator Background="#555555"/>
+            <StatusBarItem Foreground="#AAAAAA">
+                <TextBlock x:Name="ConnectionsText" Text="Connections: 0"/>
+            </StatusBarItem>
+            <Separator Background="#555555"/>
+            <StatusBarItem Foreground="#AAAAAA">
+                <TextBlock x:Name="MessagesText" Text="Messages: 0"/>
+            </StatusBarItem>
+            <Separator Background="#555555"/>
+            <StatusBarItem Foreground="#AAAAAA">
+                <TextBlock x:Name="ErrorsText" Text="Errors: 0"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

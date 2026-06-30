@@ -1,0 +1,108 @@
+<UserControl x:Class="TwitchStressToolkit.UI.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="16" Background="#1E1E1E">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+            <TextBlock Text="Connection Settings"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Margin="0,0,0,16"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Max Clients:" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding MaxClients}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Connection Timeout (ms):" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding ConnectionTimeoutMs}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Reconnect Delay (ms):" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding ReconnectDelayMs}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Max Reconnects:" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding MaxReconnectAttempts}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Heartbeat (ms):" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding HeartbeatIntervalMs}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Ramp-up Delay (ms):" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding RampUpDelayMs}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Target Channel:" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding TargetChannel}" Width="200" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="Activity Settings"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Margin="0,0,0,16"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Min Message Delay (ms):" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding MessageSendMinDelayMs}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Max Message Delay (ms):" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding MessageSendMaxDelayMs}" Width="100" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <CheckBox Content="Enable Chat Simulation"
+                      IsChecked="{Binding EnableChat}"
+                      Foreground="White"
+                      Margin="0,16,0,8"/>
+
+            <CheckBox Content="Enable Viewer Emulation"
+                      IsChecked="{Binding EnableViewer}"
+                      Foreground="White"
+                      Margin="0,0,0,8"/>
+
+            <CheckBox Content="Enable Auto-Reconnect"
+                      IsChecked="{Binding EnableReconnects}"
+                      Foreground="White"
+                      Margin="0,0,0,8"/>
+
+            <CheckBox Content="Enable Proxy Rotation"
+                      IsChecked="{Binding EnableAutoRotate}"
+                      Foreground="White"
+                      Margin="0,0,0,8"/>
+
+            <TextBlock Text="Server Endpoints"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       Margin="0,24,0,16"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="IRC URL:" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding IrcUrl}" Width="300" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="GQL URL:" Width="180" VerticalAlignment="Center" Foreground="#AAAAAA"/>
+                <TextBox Text="{Binding GqlUrl}" Width="300" Foreground="White" Background="#3D3D3D"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

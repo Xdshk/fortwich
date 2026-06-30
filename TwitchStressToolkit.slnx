@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TwitchStressToolkit.Application/TwitchStressToolkit.Application.csproj" />
+  <Project Path="TwitchStressToolkit.Core/TwitchStressToolkit.Core.csproj" />
+  <Project Path="TwitchStressToolkit.Infrastructure/TwitchStressToolkit.Infrastructure.csproj" />
+  <Project Path="TwitchStressToolkit.UI/TwitchStressToolkit.UI.csproj" />
+</Solution>
