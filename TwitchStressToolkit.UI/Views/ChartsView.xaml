@@ -3,25 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF">
 
-    <Grid Margin="16" Background="#1E1E1E">
+    <Grid Margin="16" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Text="Real-time Metrics"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   Margin="0,0,0,16"/>
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Real-time Metrics"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="{DynamicResource TextBrush}"/>
+            <TextBlock Text="Combined charts for latency and message flow."
+                       Margin="0,8,0,0"
+                       Foreground="{DynamicResource SubtextBrush}"/>
+        </StackPanel>
 
-        <lvc:CartesianChart Grid.Row="1"
-                            x:Name="Chart"
-                            Series="{Binding Series}"
-                            XAxes="{Binding XAxes}"
-                            YAxes="{Binding YAxes}"
-                            TooltipPosition="Top"
-                            AnimationsSpeed="00:00:00.150"/>
+        <Border Grid.Row="1" Background="{DynamicResource SurfaceBrush}" CornerRadius="18" Padding="12">
+            <lvc:CartesianChart x:Name="Chart"
+                                Series="{Binding Series}"
+                                XAxes="{Binding XAxes}"
+                                YAxes="{Binding YAxes}"
+                                TooltipPosition="Top"
+                                AnimationsSpeed="00:00:00.150"/>
+        </Border>
     </Grid>
 </UserControl>

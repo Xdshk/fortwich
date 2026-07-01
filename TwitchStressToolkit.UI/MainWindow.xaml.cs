@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using TwitchStressToolkit.UI.ViewModels;
 using TwitchStressToolkit.UI.Views;
 
@@ -39,6 +41,61 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             Trace.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] [MainWindow] FAILED to create {name} view: {ex}");
+            SetFallbackContent(name, ex);
+        }
+    }
+
+    private void SetFallbackContent(string viewName, Exception exception)
+    {
+        var fallback = new Border
+        {
+            CornerRadius = new CornerRadius(18),
+            Margin = new Thickness(24),
+            Padding = new Thickness(24),
+            Background = new SolidColorBrush(Color.FromRgb(26, 35, 48)),
+            BorderBrush = new SolidColorBrush(Color.FromRgb(255, 107, 107)),
+            BorderThickness = new Thickness(1),
+            Child = new StackPanel
+            {
+                Children =
+                {
+                    new TextBlock
+                    {
+                        Text = $"{viewName} is temporarily unavailable",
+                        FontSize = 22,
+                        FontWeight = FontWeights.SemiBold,
+                        Foreground = Brushes.White
+                    },
+                    new TextBlock
+                    {
+                        Margin = new Thickness(0, 10, 0, 0),
+                        Text = exception.Message,
+                        TextWrapping = TextWrapping.Wrap,
+                        Foreground = new SolidColorBrush(Color.FromRgb(152, 167, 184))
+                    }
+                }
+            }
+        };
+
+        switch (viewName)
+        {
+            case "Dashboard":
+                DashboardContent.Content = fallback;
+                break;
+            case "BotManager":
+                BotManagerContent.Content = fallback;
+                break;
+            case "Charts":
+                ChartsContent.Content = fallback;
+                break;
+            case "Settings":
+                SettingsContent.Content = fallback;
+                break;
+        }
+
+        if (DataContext is MainViewModel viewModel)
+        {
+            viewModel.AddLog($"{viewName} view fallback activated: {exception.Message}");
         }
     }
 }

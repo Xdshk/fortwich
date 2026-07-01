@@ -29,7 +29,7 @@ public sealed class VirtualClient : IVirtualClient
     private Task? _workerTask;
     private bool _disposed;
     private readonly object _stateLock = new();
-    private volatile bool _isReconnecting;
+    private int _isReconnecting;
 
     public Guid Id { get; }
     public BotAccount Account => _account;
@@ -200,7 +200,7 @@ public sealed class VirtualClient : IVirtualClient
         if (_cts?.IsCancellationRequested == true) return;
 
         // Prevent concurrent reconnect attempts
-        if (Interlocked.CompareExchange(ref _isReconnecting, true, false) == true)
+        if (Interlocked.CompareExchange(ref _isReconnecting, 1, 0) == 1)
         {
             _logger.LogDebug("[{Account}] Reconnect already in progress, skipping", _account.Username);
             return;
@@ -246,7 +246,7 @@ public sealed class VirtualClient : IVirtualClient
         }
         finally
         {
-            _isReconnecting = false;
+            Volatile.Write(ref _isReconnecting, 0);
         }
     }
 

@@ -79,7 +79,7 @@ public sealed class MetricsBus : IAsyncDisposable
         Debug.WriteLine($"[{DateTime.Now:HH:mm:ss.fff}] [MetricsBus] ReadLoopAsync enter");
         // Drain the channel and emit a snapshot a few times per second.
         var reader = _collector.Samples;
-        var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(250));
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(250));
 
         try
         {

@@ -30,7 +30,9 @@ public partial class App : System.Windows.Application
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "TwitchStressToolkit");
         Directory.CreateDirectory(dataDirectory);
-        var tracePath = Path.Combine(dataDirectory, "logs", "trace.log");
+        var logsDirectory = Path.Combine(dataDirectory, "logs");
+        Directory.CreateDirectory(logsDirectory);
+        var tracePath = Path.Combine(logsDirectory, "trace.log");
         // FileShare.ReadWrite позволяет другим процессам (редакторы, антивирус)
         // читать файл, пока мы пишем. Если файл заблокирован — работаем без
         // трейс-лога, но приложение не падает.
@@ -75,7 +77,7 @@ public partial class App : System.Windows.Application
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
-            .WriteTo.File(Path.Combine(dataDirectory, "logs", "log-.txt"), rollingInterval: RollingInterval.Day)
+            .WriteTo.File(Path.Combine(logsDirectory, "log-.txt"), rollingInterval: RollingInterval.Day)
             .WriteTo.Console()
             .CreateLogger();
 

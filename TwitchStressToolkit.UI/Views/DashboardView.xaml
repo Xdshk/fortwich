@@ -3,46 +3,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF">
 
-    <Grid Margin="16" Background="#1E1E1E">
+    <Grid Margin="16" Background="{DynamicResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Text="Dashboard"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   Margin="0,0,0,16"/>
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Dashboard"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="{DynamicResource TextBrush}"/>
+            <TextBlock Text="Live health snapshot for the current session."
+                       Margin="0,8,0,0"
+                       Foreground="{DynamicResource SubtextBrush}"/>
+        </StackPanel>
 
         <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,16">
-            <Border Background="#2D2D2D" Padding="16" CornerRadius="8" Margin="0,0,8,0">
+            <Border Style="{StaticResource SummaryCardStyle}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Active" Foreground="#AAAAAA" FontSize="12"/>
-                    <TextBlock Text="{Binding ActiveConnections}" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                    <TextBlock Text="Active" Style="{StaticResource SummaryLabelStyle}"/>
+                    <TextBlock Text="{Binding ActiveConnections}" Style="{StaticResource SummaryValueStyle}"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="#2D2D2D" Padding="16" CornerRadius="8" Margin="0,0,8,0">
+            <Border Style="{StaticResource SummaryCardStyle}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Msg/sec" Foreground="#AAAAAA" FontSize="12"/>
-                    <TextBlock Text="{Binding MessagesPerSecond}" Foreground="#00FF88" FontSize="28" FontWeight="Bold"/>
+                    <TextBlock Text="Msg/sec" Style="{StaticResource SummaryLabelStyle}"/>
+                    <TextBlock Text="{Binding MessagesPerSecond}" Style="{StaticResource SummaryValueStyle}" Foreground="{DynamicResource SuccessBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="#2D2D2D" Padding="16" CornerRadius="8" Margin="0,0,8,0">
+            <Border Style="{StaticResource SummaryCardStyle}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Latency" Foreground="#AAAAAA" FontSize="12"/>
-                    <TextBlock Text="{Binding Latency, StringFormat={}{0:F0} ms}" Foreground="#FF8800" FontSize="28" FontWeight="Bold"/>
+                    <TextBlock Text="Latency" Style="{StaticResource SummaryLabelStyle}"/>
+                    <TextBlock Text="{Binding Latency, StringFormat={}{0:F0} ms}" Style="{StaticResource SummaryValueStyle}" Foreground="{DynamicResource AccentBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="#2D2D2D" Padding="16" CornerRadius="8">
+            <Border Style="{StaticResource SummaryCardStyle}">
                 <StackPanel>
-                    <TextBlock Text="Errors" Foreground="#AAAAAA" FontSize="12"/>
-                    <TextBlock Text="{Binding ErrorCount}" Foreground="#FF4444" FontSize="28" FontWeight="Bold"/>
+                    <TextBlock Text="Errors" Style="{StaticResource SummaryLabelStyle}"/>
+                    <TextBlock Text="{Binding ErrorCount}" Style="{StaticResource SummaryValueStyle}" Foreground="{DynamicResource ErrorBrush}"/>
                 </StackPanel>
             </Border>
         </UniformGrid>
@@ -53,7 +56,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" Background="#2D2D2D" Padding="8" CornerRadius="8" Margin="0,0,0,8">
+            <Border Grid.Row="0" Background="{DynamicResource SurfaceBrush}" Padding="12" CornerRadius="18" Margin="0,0,0,10">
                 <lvc:CartesianChart Series="{Binding LatencyChartSeries}"
                                     XAxes="{Binding XAxes}"
                                     YAxes="{Binding YAxes}"
@@ -61,7 +64,7 @@
                                     AnimationsSpeed="00:00:00.150"/>
             </Border>
 
-            <Border Grid.Row="1" Background="#2D2D2D" Padding="8" CornerRadius="8">
+            <Border Grid.Row="1" Background="{DynamicResource SurfaceBrush}" Padding="12" CornerRadius="18">
                 <lvc:CartesianChart Series="{Binding ThroughputChartSeries}"
                                     XAxes="{Binding XAxes}"
                                     YAxes="{Binding YAxes}"

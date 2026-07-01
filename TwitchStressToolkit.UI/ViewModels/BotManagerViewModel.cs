@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,6 +15,7 @@ public sealed partial class BotManagerViewModel : ObservableObject
     private readonly AccountManager _accountManager;
     private readonly ISimulationEngine _simulationEngine;
     private readonly IProxyManager _proxyManager;
+    private readonly SettingsViewModel _settings;
 
     [ObservableProperty]
     private ObservableCollection<BotAccount> _accounts = [];
@@ -71,11 +73,13 @@ public sealed partial class BotManagerViewModel : ObservableObject
     public IAsyncRelayCommand LoadProxiesCommand { get; }
     public IAsyncRelayCommand AddProxyCommand { get; }
 
-    public BotManagerViewModel(AccountManager accountManager, ISimulationEngine simulationEngine, IProxyManager proxyManager)
+    public BotManagerViewModel(AccountManager accountManager, ISimulationEngine simulationEngine, IProxyManager proxyManager, SettingsViewModel settings)
     {
         _accountManager = accountManager;
         _simulationEngine = simulationEngine;
         _proxyManager = proxyManager;
+        _settings = settings;
+        TargetChannel = _settings.TargetChannel;
 
         LoadAccountsCommand = new AsyncRelayCommand(LoadAccountsAsync, () => !IsLoading);
         AddAccountCommand = new AsyncRelayCommand(AddAccountAsync);
@@ -111,6 +115,13 @@ public sealed partial class BotManagerViewModel : ObservableObject
         {
             StatusText = log;
         };
+
+        _accountManager.AccountStatusChanged += (account, status) =>
+        {
+            StatusText = $"{account.Username}: {status}";
+        };
+
+        _settings.PropertyChanged += SettingsOnPropertyChanged;
     }
 
     private async Task LoadAccountsAsync()
@@ -126,6 +137,7 @@ public sealed partial class BotManagerViewModel : ObservableObject
 
         try
         {
+            Accounts.Clear();
             await _accountManager.LoadAccountsAsync(AccountsFile);
         }
         catch (Exception ex)
@@ -221,11 +233,23 @@ public sealed partial class BotManagerViewModel : ObservableObject
 
         try
         {
+            var baseConfig = _settings.ToConfig();
             var config = new ConnectionConfig
             {
+                BaseUrl = baseConfig.BaseUrl,
+                GqlUrl = baseConfig.GqlUrl,
                 TargetChannel = TargetChannel,
                 MaxClients = Accounts.Count,
-                RampUpDelayMs = 1000
+                ConnectionTimeoutMs = baseConfig.ConnectionTimeoutMs,
+                ReconnectDelayMs = baseConfig.ReconnectDelayMs,
+                MaxReconnectAttempts = baseConfig.MaxReconnectAttempts,
+                HeartbeatIntervalMs = baseConfig.HeartbeatIntervalMs,
+                MessageSendMinDelayMs = baseConfig.MessageSendMinDelayMs,
+                MessageSendMaxDelayMs = baseConfig.MessageSendMaxDelayMs,
+                RampUpDelayMs = baseConfig.RampUpDelayMs,
+                EnableChat = baseConfig.EnableChat,
+                EnableViewer = baseConfig.EnableViewer,
+                EnableReconnects = baseConfig.EnableReconnects
             };
 
             await _simulationEngine.StartAsync(config, CancellationToken.None);
@@ -256,6 +280,7 @@ public sealed partial class BotManagerViewModel : ObservableObject
         try
         {
             var proxies = await _proxyManager.LoadFromFileAsync(ProxiesFile);
+            Proxies.Clear();
             foreach (var proxy in proxies)
             {
                 Proxies.Add(proxy);
@@ -271,5 +296,40 @@ public sealed partial class BotManagerViewModel : ObservableObject
     private async Task AddProxyAsync()
     {
         StatusText = "Use proxies.txt file format: host:port:user:pass";
+    }
+
+    partial void OnSelectedAccountChanged(BotAccount? value)
+    {
+        RemoveAccountCommand.NotifyCanExecuteChanged();
+        ChangeChannelCommand.NotifyCanExecuteChanged();
+        ValidateAccountCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnIsLoadingChanged(bool value)
+    {
+        LoadAccountsCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnIsRunningChanged(bool value)
+    {
+        StartSimulationCommand.NotifyCanExecuteChanged();
+        StopSimulationCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnTargetChannelChanged(string value)
+    {
+        var normalized = value.Trim().TrimStart('#');
+        if (_settings.TargetChannel != normalized)
+        {
+            _settings.TargetChannel = normalized;
+        }
+    }
+
+    private void SettingsOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SettingsViewModel.TargetChannel) && TargetChannel != _settings.TargetChannel)
+        {
+            TargetChannel = _settings.TargetChannel;
+        }
     }
 }

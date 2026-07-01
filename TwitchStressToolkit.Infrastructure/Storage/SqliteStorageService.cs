@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
+using SQLitePCL;
 using TwitchStressToolkit.Core.Interfaces;
 using TwitchStressToolkit.Core.Models;
 
@@ -18,6 +19,8 @@ public sealed class SqliteStorageService : IStorageService
 
     public SqliteStorageService(string dbPath)
     {
+        Batteries.Init();
+
         var directory = Path.GetDirectoryName(dbPath);
         if (!string.IsNullOrEmpty(directory))
         {
